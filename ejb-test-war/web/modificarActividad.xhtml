@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+		xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+   
+      >
+ 
+<ui:composition template="templates/layout.xhtml" >
+ 	<ui:define name="title">Nueva actividad</ui:define>
+	<ui:define name="content">
+	<c:choose>
+<c:when test="#{controlAutorizacion.hayONG()==true}">
+	<body style="background-color:powderblue;">
+	<br></br>
+        
+	<div align="center">
+ 		<h:form > 				<!-- hace falta el action xd -->
+	 		<p>Nombre: <h:inputText id="nombre" value="#{bEstado.nombre}" ></h:inputText></p>
+	 		<p>Descripcion: <h:inputText id="descripcion" value="#{bEstado.descripcion}"></h:inputText></p>
+	 		<p>Lugar: <h:inputText id="lugar" value="#{bEstado.lugar}"></h:inputText></p>
+	 		<p><label for="start">Fecha Inicio:</label>
+                            <h:inputText id="fechainicio" value="#{bEstado.fecha_inicio}"><f:convertDateTime pattern="yyyy/mm/dd" timeZone="CET"  /></h:inputText>
+                        </p>
+			<p><label for="start">Fecha Fin:</label>
+                            <h:inputText id="fechafin" value="#{bEstado.fecha_fin}"><f:convertDateTime pattern="yyyy/mm/dd" timeZone="CET"/></h:inputText>
+                        </p>	
+				
+			
+			<p>Tipo de actividad: <h:inputText id="tipo_actividad" value="#{bEstado.tipo_actividad}"></h:inputText></p>
+			
+	  	
+	  		<p>
+	  	
+	  		<h:commandButton value="Aceptar" action="#{bEstado.procesarCambios()}" />
+	  			  		<h:commandButton value="Cancelar" action="consultaractividad.xhtml" />
+	  		
+	  		</p>
+                        <h:outputText value="#{bActividad.fechaInicio}"/>
+ 		</h:form >
+ 		
+ 	</div>
+	</body>
+	</c:when>
+	<c:otherwise>
+	
+	<ui:include src="errorAutorizacion.xhtml"/>	<!-- Modificar mas adelante -->
+  </c:otherwise>
+  </c:choose>
+	</ui:define>
+
+</ui:composition>
+</html>
