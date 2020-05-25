@@ -10,6 +10,7 @@
 <ui:composition template="templates/layout.xhtml" >
 	<ui:define name="title">Buscar actividades</ui:define>
 	<ui:define name="content">
+
 <c:choose>
 <c:when test="#{controlAutorizacion.usuario.tipo_usuario!=NULL}">
 	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -46,6 +47,7 @@
     	<h1 class="my-4">Buscar Actividades
     	</h1>
     </div>
+           <h:messages style="color: #9b2e23 "/>
 
     <!-- Marketing Icons Section -->
     <div class="row">
@@ -205,7 +207,6 @@
   </div>
   </c:when>
  
- <h:messages style="color: #9b2e23 "/>
   <c:otherwise>
    <ui:include src="errorAutorizacion.xhtml"/>	<!-- Modificar mas adelante -->
   </c:otherwise>

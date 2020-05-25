@@ -63,9 +63,9 @@
 			            <b>Estado: </b>${proy.estado}<br></br>
 			            <b>Tipo proyecto: </b>${proy.tipo_Proyecto}<br></br>
 			          <b>Actividades: </b><br></br>
+                                    </p>
 			           <c:forEach items="#{proy.actividades}" var="act" > 
 					          
-					        <div class="card h-100">
 					          <h5 class="card-header">${act.nombre}</h5>
 					          <div class="card-body">
 					          	
@@ -79,26 +79,16 @@
 					            
 					            </p>
 					          </div>
-			          <h:form>
-			          <div class="card-footer" align="center">
 			         
-			         </div>
-			         
-			         </h:form>
-			        </div>
-			      			         					            <br></br>
+			      			<br></br>
 			      
 			            
 			            
 			            	
 			            </c:forEach>
-			            </p>
 			          </div>
-			          <h:form>
-			          <div class="card-footer" align="center">
-			         
-			         </div>
-			         </h:form>
+
+			      
 			        </div>
 			      </div>
       

@@ -21,10 +21,10 @@
 	 		<p>Nombre: <h:inputText id="nombre" value="#{bActividad.nombre_actividad}"></h:inputText></p>
 	 		<p>Descripcion: <h:inputText id="descripcion" value="#{bActividad.descripcion}"></h:inputText></p>
 	 		<p>Lugar: <h:inputText id="lugar" value="#{bActividad.lugar}"></h:inputText></p>
-	 		<p><label for="start">Fecha Inicio:</label>
+	 		<p><label for="start">Fecha Inicio (YYYY/MM/DD):</label>
                             <h:inputText id="fechainicio" value="#{bActividad.fechaInicio}"><f:convertDateTime pattern="yyyy/mm/dd" timeZone="CET"  /></h:inputText>
                         </p>
-			<p><label for="start">Fecha Fin:</label>
+			<p><label for="start">Fecha Fin (YYYY/MM/DD):</label>
                             <h:inputText id="fechafin" value="#{bActividad.fechaFin}"><f:convertDateTime pattern="yyyy/mm/dd" timeZone="CET"/></h:inputText>
                         </p>	
 				
@@ -38,7 +38,6 @@
 	  			  		<h:commandButton value="Cancelar" />
 	  		
 	  		</p>
-                        <h:outputText value="#{bActividad.fechaInicio}"/>
  		</h:form >
  		
  	</div>

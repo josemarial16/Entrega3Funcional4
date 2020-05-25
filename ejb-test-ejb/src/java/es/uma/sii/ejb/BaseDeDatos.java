@@ -143,6 +143,10 @@ public class BaseDeDatos implements BaseDeDatosLocal {
             Query query = em.createQuery("select a from Inscripcion_Actividad a");
         return query.getResultList();
         }
+        public List<Inscripcion_Actividad_Formacion> getInscripcionesActividadFormacion(){
+           Query query  = em.createQuery("select a from Inscripcion_Actividad_Formacion a where type(a)=Inscripcion_Actividad_Formacion");
+        return query.getResultList();
+        }
        public void modificarInscripcion(Inscripcion_Actividad ins){
            em.merge(ins);
        }
@@ -152,6 +156,8 @@ public class BaseDeDatos implements BaseDeDatosLocal {
        public void eliminarInscripcionActividad(Inscripcion_Actividad ins){
            em.remove(em.merge(ins));
        }
-
+       public void eliminarAdministrador(Administrador a){
+           em.remove(em.merge(a));
+       }
 }
 

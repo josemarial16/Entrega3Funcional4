@@ -16,6 +16,7 @@ import es.uma.sii.entidades.Actividad;
 import es.uma.sii.entidades.Actividad_Formacion;
 import es.uma.sii.entidades.Administrador;
 import es.uma.sii.entidades.Alumno;
+import es.uma.sii.entidades.Asignatura;
 import es.uma.sii.entidades.Inscripcion_Actividad;
 import es.uma.sii.entidades.Inscripcion_Actividad_Formacion;
 import es.uma.sii.entidades.ONG;
@@ -257,7 +258,7 @@ public class BActividad {
         public String evaluarAlumno(Inscripcion_Actividad ins){
             String pagina="evaluaralumnos.xhtml";
             Inscripcion_Actividad_Formacion insf=new Inscripcion_Actividad_Formacion(ins);
-            insf.setEstado_Inscripcion("terminada y evaluada");
+            insf.setEstado_Inscripcion("terminada");
             insf.setNota(notaProfesor);
             insf.setComentario_Profesor(comentarioProfesor);
             bd.modificarInscripcion(insf);
@@ -462,10 +463,12 @@ public class BActividad {
         }
        
         public String procesarProyecto(){
+            FacesContext ctx = FacesContext.getCurrentInstance();
             String pagina="solicitarproyectos.xhtml";
             long id=r.nextLong();
             Proyecto p=new Proyecto(id,this.nombre_Proyecto,"pendiente de validacion",this.descripcion_Proyecto,this.tipo_Proyecto,convertirAList(),null);
             bd.setNuevoProyecto(p);
+            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Proyecto creado correctamente", ""));
             for(Actividad a:convertirAList()){
                 a.setProyecto(p);
                 bd.modificarActividad(a);
@@ -519,6 +522,38 @@ public class BActividad {
 		}
 		return actvs;
 	}
+        
+        public Actividad_Formacion esFormacion(Actividad a){
+            List<Actividad_Formacion> listAf=bd.getActividadesFormacion();
+            Actividad_Formacion act=null;
+            boolean encontrado=false;
+            int cont=0;
+            while(!encontrado && cont<listAf.size()){
+                if(listAf.get(cont).getIdentificador()==a.getIdentificador()){
+                    act=listAf.get(cont);
+                    encontrado=true;
+                }else{
+                    cont++;
+                }
+            }
+            return act;
+        }
+        
+        public boolean estaMatriculado(Usuario u,Actividad_Formacion af){
+            boolean esta=false;
+            Asignatura ac=af.getAsignatura();
+            for(Asignatura a:bd.getAsignatura()){
+                if(a.getCodigo()==ac.getCodigo()){
+                    for(Alumno alu:a.getAlumnosInscritos()){
+                        if(u.getDNI().equals(alu.getDNI())){
+                            esta=true;
+                        }
+                    }
+                }
+            }
+            return esta;
+        }
+        
         public String procesarInscripcion(Long id){
             String pagina="buscaractividades.xhtml";
             FacesContext ctx = FacesContext.getCurrentInstance();
@@ -579,6 +614,15 @@ public class BActividad {
 	public List<Inscripcion_Actividad> obtenerListaInscripcionPorUsuario(Usuario usuario){
 		List<Inscripcion_Actividad> actvs=new ArrayList<Inscripcion_Actividad>();
 		for(Inscripcion_Actividad ins:bd.getInscripcionesActividad()) {
+			if(ins.getUsuario().getDNI().equals(usuario.getDNI())) {
+				actvs.add(ins);
+			}
+		}
+		return actvs;
+	}
+        public List<Inscripcion_Actividad_Formacion> obtenerListaInscripcionFormacionPorUsuario(Usuario usuario){
+		List<Inscripcion_Actividad_Formacion> actvs=new ArrayList<Inscripcion_Actividad_Formacion>();
+		for(Inscripcion_Actividad_Formacion ins:bd.getInscripcionesActividadFormacion()) {
 			if(ins.getUsuario().getDNI().equals(usuario.getDNI())) {
 				actvs.add(ins);
 			}
@@ -745,7 +789,7 @@ public class BActividad {
 	public List<Inscripcion_Actividad>obtenerListaEvaluarAlumnos(Usuario usuario){
 		List<Inscripcion_Actividad>actvs=new ArrayList<Inscripcion_Actividad>();
 		for(Inscripcion_Actividad a:bd.getInscripcionesActividad()) {
-			if(a.getActividad().getTipo_Actividad().equalsIgnoreCase("formacion") && a.getEstado_Inscripcion().equalsIgnoreCase("Terminada")) {
+			if(a.getActividad().getTipo_Actividad().equalsIgnoreCase("formacion") && a.getActividad().getEstado().equalsIgnoreCase("Finalizada")) {
                             
 				actvs.add(a);
 			}
@@ -850,4 +894,9 @@ public class BActividad {
 		}
 		return actvs;
 	}
+        public String eliminarAdministrador(Administrador a){
+            bd.eliminarAdministrador(a);
+            
+            return "listadministradores.xhtml";
+        }
 }

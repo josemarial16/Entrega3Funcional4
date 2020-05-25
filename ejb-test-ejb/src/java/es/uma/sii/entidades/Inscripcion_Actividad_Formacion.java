@@ -12,6 +12,7 @@ import javax.persistence.*;
  *
  */
 @Entity
+@DiscriminatorValue("IAF")
 
 public class Inscripcion_Actividad_Formacion extends Inscripcion_Actividad implements Serializable {
 

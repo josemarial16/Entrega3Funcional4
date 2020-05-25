@@ -11,6 +11,7 @@ import javax.persistence.*;
  *
  */
 @Entity
+@DiscriminatorValue("IA")
 
 public class Inscripcion_Actividad implements Serializable {
 

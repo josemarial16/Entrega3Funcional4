@@ -43,6 +43,8 @@ public interface BaseDeDatosLocal {
     public List<Proyecto>getProyectos();
     public void setNuevaInscripcion(Inscripcion_Actividad ins);
     public List<Inscripcion_Actividad> getInscripcionesActividad();
+    public List<Inscripcion_Actividad_Formacion> getInscripcionesActividadFormacion();
+
     public void modificarInscripcion(Inscripcion_Actividad ins);
      public void modificarInscripcion_Formacion(Inscripcion_Actividad_Formacion ins);
     public void eliminarInscripcionActividad(Inscripcion_Actividad ins);
@@ -51,5 +53,6 @@ public interface BaseDeDatosLocal {
     public void setNuevaONG(ONG o);
     public List<Responsable_Asignatura>getResponsableAsignatura();
     public List<Asignatura>getAsignatura();
+    public void eliminarAdministrador(Administrador a);
             
 }
