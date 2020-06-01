@@ -55,7 +55,7 @@
 	 		<c:if test="#{bActividad.estado==0}">
 
     
-   			 <c:forEach items="#{bActividad.obtenerSolicitudesAlumnos(controlAutorizacion.ONG)}" var="ins" > 
+   			 <c:forEach items="#{bActividad.obtenerSolicitudesAlumnosONG(controlAutorizacion.ONG)}" var="ins" > 
 			    <div class="col-lg-4 mb-4">
 			        <div class="card h-100">
 			          <h4 class="card-header">${ins.actividad.nombre}</h4>
@@ -70,10 +70,10 @@
 			          <h:form>
 			          <div class="card-footer" align="center">
 			         	
-     			    <h:commandButton class="btn btn-primary"  onClick="location.reload();" value="Validar" action="#{bActividad.setEstado(1)}" />
+     			    <h:commandButton class="btn btn-primary"  value="Validar" action="#{bActividad.aceptarSolicitudUsuario(ins)}" />
       			    <br></br>
       			    <br></br>
-      			    <h:commandButton class="btn btn-primary"  onClick="location.reload();" value="Cancelar" action="#{bActividad.setEstado(1)}" />
+      			    <h:commandButton class="btn btn-primary"  value="Cancelar" action="#{bActividad.rechazarSolicitudUsuario(ins)}" />
       			
      
 			         </div>

@@ -68,22 +68,14 @@
 						
 			  			
 			  			<h:form>
-			  			<p>Horas: <h:inputText id="horas"></h:inputText></p>
-			  			<p>Valoracion: <h:inputText id="valoracion"></h:inputText></p>
-			 			<p>Comentario: <h:inputText id="comentario"></h:inputText></p>
+			  			<p>Horas: <h:inputText id="horas" value="#{bActividad.horas}"></h:inputText></p>
+			  			<p>Valoracion: <h:inputText id="valoracion" value="#{bActividad.valoracionONG}"></h:inputText></p>
+			 			<p>Comentario: <h:inputText id="comentario" value="#{bActividad.comentarioONG}"></h:inputText></p>
+                                                 <h:commandButton class="btn btn-primary"  value="Aceptar" action="#{bActividad.valorarUsuariosONG(ins)}" />
 			  			</h:form>
 			            </p>
 			          </div>
-			          <h:form>
-			          <div class="card-footer" align="center">
-			         	
-     			    <h:commandButton class="btn btn-primary"  onClick="location.reload();" value="Aceptar" action="#{bActividad.setEstado(1)}" />
-      			  <br></br>
-      			    <br></br>
-      			    <h:commandButton class="btn btn-primary"  onClick="location.reload();" value="Cancelar" action="#{bActividad.setEstado(1)}" />
-     
-			         </div>
-			         </h:form>
+			       
 			        </div>
 			      </div>
       

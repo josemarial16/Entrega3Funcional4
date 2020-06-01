@@ -243,6 +243,33 @@ public class BActividad {
         private List<Actividad>actividadesElegir;
         private String[]actividadesElegidas;
         private int valoracion_actividad;
+        private int horas;
+        private int valoracionONG;
+        private String comentarioONG;
+
+    public int getHoras() {
+        return horas;
+    }
+
+    public void setHoras(int horas) {
+        this.horas = horas;
+    }
+
+    public int getValoracionONG() {
+        return valoracionONG;
+    }
+
+    public void setValoracionONG(int valoracionONG) {
+        this.valoracionONG = valoracionONG;
+    }
+
+    public String getComentarioONG() {
+        return comentarioONG;
+    }
+
+    public void setComentarioONG(String comentarioONG) {
+        this.comentarioONG = comentarioONG;
+    }
         private List<Responsable_Asignatura>responsableAsignaturaElegir;
 
     public List<Responsable_Asignatura> getResponsableAsignaturaElegir() {
@@ -276,7 +303,13 @@ public class BActividad {
     public String getComentarioProfesor() {
         return comentarioProfesor;
     }
-
+    public String valorarUsuariosONG(Inscripcion_Actividad ins){
+        ins.setNumero_Horas_Realizadas(this.horas);
+        ins.setValoracion_ONG(this.valoracionONG);
+        ins.setRazon_ONG(this.comentarioONG);
+        bd.modificarInscripcion(ins);
+        return "valorarusuariosONG.xhtml";
+    }
     public void setComentarioProfesor(String comentarioProfesor) {
         this.comentarioProfesor = comentarioProfesor;
     }
@@ -562,7 +595,7 @@ public class BActividad {
                     Actividad_Formacion af=esFormacion(a);
                     if(af!=null){
                         if(estaMatriculado(ctrl.getUsuario(),af)){
-                            Inscripcion_Actividad ins=new Inscripcion_Actividad(r.nextLong(),"Pendiente de validacion",-1,"",-1,"",-1,a,ctrl.getUsuario());
+                            Inscripcion_Actividad ins=new Inscripcion_Actividad(r.nextLong(),"Pendiente de validacion PDI",-1,"",-1,"",-1,a,ctrl.getUsuario());
                             bd.setNuevaInscripcion(ins);
                             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Inscripcion en actividad creada correctamente", ""));
                            }else{
@@ -570,7 +603,7 @@ public class BActividad {
 
                         }
                     }else{
-                        Inscripcion_Actividad ins=new Inscripcion_Actividad(r.nextLong(),"Pendiente de validacion",-1,"",-1,"",-1,a,ctrl.getUsuario());
+                        Inscripcion_Actividad ins=new Inscripcion_Actividad(r.nextLong(),"Pendiente de validacion ONG",-1,"",-1,"",-1,a,ctrl.getUsuario());
                         bd.setNuevaInscripcion(ins);
                         ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Inscripcion en actividad creada correctamente", ""));
                     }
@@ -773,7 +806,7 @@ public class BActividad {
 	public List<Inscripcion_Actividad>obtenerSolicitudesAlumnosPDI(Usuario usuario){
 		List<Inscripcion_Actividad>actvs=new ArrayList<Inscripcion_Actividad>();
 		for(Inscripcion_Actividad a:bd.getInscripcionesActividad()) {
-			if(a.getActividad().getTipo_Actividad().equalsIgnoreCase("formacion") && a.getEstado_Inscripcion().equalsIgnoreCase("Pendiente de validacion")) {
+			if(a.getActividad().getTipo_Actividad().equalsIgnoreCase("formacion") && a.getEstado_Inscripcion().equalsIgnoreCase("Pendiente de validacion PDI")) {
                             
 				actvs.add(a);
 			}
@@ -783,6 +816,12 @@ public class BActividad {
         public String validarSolicitudAlumnoPDI(Inscripcion_Actividad ins){
             String pagina="validarsolicitudalumnos.xhtml";
             ins.setEstado_Inscripcion("Validada");
+            bd.modificarInscripcion(ins);
+            return pagina;
+        }
+          public String rechazarSolicitudAlumnoPDI(Inscripcion_Actividad ins){
+            String pagina="validarsolicitudalumnos.xhtml";
+            ins.setEstado_Inscripcion("rechazada");
             bd.modificarInscripcion(ins);
             return pagina;
         }
@@ -858,18 +897,28 @@ public class BActividad {
 	
 	public List<Inscripcion_Actividad>obtenerSolicitudesAlumnosONG(ONG ong){
 		List<Inscripcion_Actividad>actvs=new ArrayList<Inscripcion_Actividad>();
-		for(Inscripcion_Actividad a: inscripciones_actividades) {
-			if(a.getActividad().getONG().getUsuario_Acceso().equalsIgnoreCase(ong.getUsuario_Acceso()) && a.getEstado_Inscripcion().equals("Pendiente de validacion de ONG")) {
+		for(Inscripcion_Actividad a: bd.getInscripcionesActividad()) {
+			if(a.getActividad().getONG().getUsuario_Acceso().equalsIgnoreCase(ong.getUsuario_Acceso()) && a.getEstado_Inscripcion().equals("Pendiente de validacion ONG")) {
 				actvs.add(a);
 			}
 		}
 		return actvs;
 	}
 	
+        public String aceptarSolicitudUsuario(Inscripcion_Actividad ins){
+            ins.setEstado_Inscripcion("validada");
+            bd.modificarInscripcion(ins);
+            return "solicitudespendientesONG.xhtml";
+        }
+         public String rechazarSolicitudUsuario(Inscripcion_Actividad ins){
+            ins.setEstado_Inscripcion("rechazada");
+            bd.modificarInscripcion(ins);
+            return "solicitudespendientesONG.xhtml";
+        }
 	public List<Inscripcion_Actividad>obtenerInscripcionesActividad(Actividad act){
 		List<Inscripcion_Actividad>actvs=new ArrayList<Inscripcion_Actividad>();
-		for(Inscripcion_Actividad a: inscripciones_actividades) {
-			if(a.getActividad().equals(act)) {
+		for(Inscripcion_Actividad a: bd.getInscripcionesActividad()) {
+			if(a.getActividad().getIdentificador().equals(act.getIdentificador())) {
 				actvs.add(a);
 			}
 		}
@@ -878,7 +927,7 @@ public class BActividad {
 	
 	public List<Actividad>obtenerActividadesDeONGEnCurso(ONG ong){
 		List<Actividad>actvs=new ArrayList<Actividad>();
-		for(Actividad a:actividades) {
+		for(Actividad a:bd.getActividades()) {
 			if(!a.getEstado().equalsIgnoreCase("Pendiente de validacion") && a.getONG().getUsuario_Acceso().equals(ong.getUsuario_Acceso())) {
 				actvs.add(a);
 			}
@@ -887,8 +936,8 @@ public class BActividad {
 	}
 	public List<Inscripcion_Actividad>obtenerInscripcionesActividadPendientesValorar(ONG ong){
 		List<Inscripcion_Actividad>actvs=new ArrayList<Inscripcion_Actividad>();
-		for(Inscripcion_Actividad a: inscripciones_actividades) {
-			if(a.getActividad().getONG().equals(ong) && a.getEstado_Inscripcion().equals("Pendiente de valoracion")) {
+		for(Inscripcion_Actividad a: bd.getInscripcionesActividad()) {
+			if((a.getActividad().getONG().getIdentificador()==ong.getIdentificador()) && (a.getEstado_Inscripcion().equalsIgnoreCase("Pendiente de valoracion"))) {
 				actvs.add(a);
 			}
 		}
